@@ -1,0 +1,6 @@
+{
+  "name": "Bloco",
+  "description": "Launcher Metro Bloco em Kotlin para Motorola Moto G14 com grade de 6 colunas, pastas expansíveis, notas rápidas, blocos ao vivo e personalização completa.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

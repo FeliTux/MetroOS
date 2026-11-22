@@ -1,0 +1,291 @@
+<resources>
+    <string name="app_name">Bloco</string>
+
+    <!-- Início / Launcher Role -->
+    <string name="home_role">Definir como início</string>
+    <string name="home_role_active">Bloco já está como início padrão</string>
+    <string name="home_role_description">Defina o Bloco como sua tela inicial para abrir ao pressionar Início no Moto G14.</string>
+    <string name="home_restore_title">Restaurar início da Motorola</string>
+    <string name="home_restore_instructions">Para voltar ao launcher original da Motorola: abra Configurações do sistema &gt; Apps &gt; Apps padrão &gt; App de início e escolha Moto App Launcher.</string>
+    <string name="home_open_system_settings">Abrir configurações de início</string>
+
+    <!-- Comandos e Navegação -->
+    <string name="apps">Aplicativos</string>
+    <string name="search">Buscar</string>
+    <string name="search_hint">Buscar aplicativos</string>
+    <string name="edit">Editar</string>
+    <string name="done">Concluir</string>
+    <string name="unpin">Desafixar</string>
+    <string name="pin">Fixar no início</string>
+    <string name="pin_to_hub">Fixar em um Hub</string>
+    <string name="move">Mover</string>
+    <string name="resize">Tamanho</string>
+    <string name="small">Pequeno</string>
+    <string name="medium">Médio</string>
+    <string name="wide">Largo</string>
+    <string name="save">Salvar</string>
+    <string name="discard">Descartar</string>
+    <string name="keep_editing">Continuar editando</string>
+    <string name="unsaved">Salvar alterações?</string>
+    <string name="unsaved_message">Você tem alterações não salvas na grade inicial.</string>
+    <string name="more_options">Mais opções</string>
+    <string name="bar_more_actions">Mais ações da barra</string>
+    <string name="left_bar_slot">Atalho esquerdo da barra</string>
+
+    <!-- Personalização e Desempenho -->
+    <string name="personalization">Configurações</string>
+    <string name="settings">Configurações</string>
+    <string name="settings_section_profile">Meu perfil</string>
+    <string name="settings_section_appearance">Aparência</string>
+    <string name="settings_section_start_screen">Tela inicial</string>
+    <string name="settings_section_performance">Desempenho</string>
+    <string name="settings_section_accessibility">Acessibilidade</string>
+    <string name="settings_section_about">Sobre o projeto</string>
+    <string name="settings_section_advanced">Avançado</string>
+    <string name="settings_section_appearance_desc">Tema claro ou escuro, cor de destaque e rótulos</string>
+    <string name="settings_section_start_desc">Fotos no início, blocos ao vivo, atalhos e organização</string>
+    <string name="settings_section_performance_desc">Modo leve, economia de memória e animações</string>
+    <string name="settings_section_accessibility_desc">Leitura de tela, alertas visuais, audição e movimento</string>
+    <string name="settings_section_about_desc">Créditos, versão instalada e uso gratuito</string>
+    <string name="settings_section_advanced_desc">Início padrão, cache de ícones e ajustes técnicos</string>
+    <string name="settings_back_to_list">Configurações</string>
+
+    <string name="theme_title">Tema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Escuro</string>
+    <string name="theme_system">Seguir o sistema</string>
+    <string name="theme_preview_caption">Prévia da tela inicial</string>
+
+    <string name="accent">Cor de destaque</string>
+    <string name="accent_preview">Pré-visualização</string>
+    <string name="background_color">Cor de fundo</string>
+    <string name="gutter_spacing">Espaçamento entre blocos</string>
+    <string name="show_labels">Mostrar nomes nos blocos</string>
+    <string name="lock_layout">Bloquear organização</string>
+    <string name="lock_layout_description">Impede movimentos ou edições acidentais na grade.</string>
+    <string name="layout_locked_notice">A organização está bloqueada em Configurações</string>
+    <string name="motion">Reduzir animações</string>
+    <string name="motion_description">Exibe transições diretas sem movimentos extras.</string>
+    <string name="light_mode">Modo leve</string>
+    <string name="light_mode_description">Reduz animações e o uso de imagens para deixar a tela inicial mais leve.</string>
+    <string name="light_mode_auto">Automático</string>
+    <string name="light_mode_enabled">Ativado</string>
+    <string name="light_mode_disabled">Desativado</string>
+    <string name="light_mode_auto_active_low_ram">Pouca memória detectada: Modo leve ativo automaticamente.</string>
+    <string name="light_mode_auto_standard_ram">Memória padrão detectada: recursos completos ativos.</string>
+    <string name="light_mode_low_ram_detected">Dispositivo com pouca RAM detectado: Modo leve recomendado.</string>
+    <string name="tile_color">Cor do bloco</string>
+    <string name="use_theme_color">Usar cor do tema</string>
+    <string name="hex_color_label">Código hexadecimal (#RRGGBB)</string>
+    <string name="apply_hex">Aplicar cor</string>
+    <string name="invalid_hex">Código hexadecimal inválido</string>
+
+    <!-- Meu Perfil -->
+    <string name="profile_add_name">Adicionar nome</string>
+    <string name="profile_choose_photo">Escolher foto</string>
+    <string name="profile_change_name">Alterar nome</string>
+    <string name="profile_edit_age">Editar idade</string>
+    <string name="profile_clear_age">Limpar idade</string>
+    <string name="profile_remove_photo">Remover foto</string>
+    <string name="profile_name_label">Nome de preferência</string>
+    <string name="profile_age_label">Idade (opcional)</string>
+    <string name="profile_age_years">%1$d anos</string>
+    <string name="profile_show_on_start">Mostrar meu perfil no início</string>
+    <string name="profile_show_on_start_desc">Mostra apenas sua foto e seu nome no início. A idade nunca aparece na tela inicial.</string>
+    <string name="profile_crop_title">Ajustar retrato</string>
+    <string name="profile_crop_hint">Ajuste o recorte antes de salvar seu retrato neste aparelho.</string>
+    <string name="profile_crop_zoom">Aproximação</string>
+    <string name="profile_crop_horizontal">Posição horizontal</string>
+    <string name="profile_crop_vertical">Posição vertical</string>
+    <string name="profile_crop_confirm">Usar retrato</string>
+    <string name="profile_photo_cancelled">Seleção de foto cancelada</string>
+    <string name="profile_photo_removed">Foto do perfil removida</string>
+    <string name="profile_remove_photo_confirm">Remover a foto do perfil?</string>
+    <string name="profile_remove_photo_confirm_msg">A cópia do seu retrato será apagada do aparelho. Seu nome e idade continuam salvos.</string>
+    <string name="profile_invalid_age">Informe uma idade válida entre 1 e 120 anos.</string>
+    <string name="profile_saved">Perfil atualizado</string>
+    <string name="profile_local_privacy_note">Seu perfil fica salvo apenas localmente neste aparelho.</string>
+
+    <!-- Acessibilidade -->
+    <string name="a11y_group_screen_reader_vision">Leitura de tela e visão</string>
+    <string name="a11y_group_hearing_alerts">Audição e alertas</string>
+    <string name="a11y_group_motion_interaction">Movimento e interação</string>
+    <string name="a11y_vision_summary">Blocos, pastas, menus e configurações funcionam com TalkBack, alto contraste, contorno de foco e fontes ampliadas sem exigir gestos difíceis.</string>
+    <string name="a11y_focus_preview">Contorno de foco visível ativado em blocos, botões e listas.</string>
+    <string name="a11y_open_screen_reader">Abrir configurações de leitura de tela</string>
+    <string name="a11y_open_screen_reader_desc">Configuração do sistema Android para TalkBack e leitura de tela.</string>
+    <string name="a11y_visual_alerts_info">Confirmações e erros sempre exibem avisos visuais legíveis na tela, sem depender de som.</string>
+    <string name="a11y_vibration_title">Vibração em confirmações</string>
+    <string name="a11y_vibration_desc">Opcional. Vibra brevemente ao fixar um bloco ou salvar uma nota.</string>
+    <string name="a11y_open_system_captions">Preferências de legenda do sistema</string>
+    <string name="a11y_open_system_captions_desc">Configuração do sistema Android para legendas e recursos auditivos.</string>
+    <string name="a11y_motion_interaction_info">Todos os controles têm toque amplo e alternativas por toque para substituir arrastar ou pressionar por muito tempo.</string>
+    <string name="a11y_system_settings_badge">Configuração do sistema Android</string>
+    <string name="a11y_system_a11y_active">Preferência de acessibilidade do sistema detectada.</string>
+    <string name="a11y_folder_announcement">%1$s, pasta, %2$d aplicativos</string>
+    <string name="a11y_folder_single_app_announcement">%1$s, pasta, 1 aplicativo</string>
+    <string name="a11y_action_move">Mover</string>
+    <string name="a11y_action_resize">Redimensionar</string>
+    <string name="a11y_action_unpin">Desafixar</string>
+    <string name="a11y_tile_options">Opções do bloco</string>
+    <string name="a11y_dismiss_alert">Fechar</string>
+    <string name="note_saved">Nota salva</string>
+
+    <!-- Sobre o projeto -->
+    <string name="about_version_format">Versão %1$s</string>
+    <string name="about_created_by">Criado por Felipe Oliveira</string>
+    <string name="about_open_source">Abrir código-fonte</string>
+    <string name="about_license_title">Licença</string>
+
+    <!-- Ícones, Reparo e Atalhos -->
+    <string name="theme_third_party_icons">Ícones monocromáticos do tema</string>
+    <string name="theme_third_party_icons_desc">Desativado por padrão para mostrar o ícone original instalado de cada aplicativo.</string>
+    <string name="use_original_icon">Usar ícone original</string>
+    <string name="reload_icons">Recarregar ícones</string>
+    <string name="reload_icons_done">Cache de ícones reconstruído</string>
+    <string name="choose_app">Escolher aplicativo</string>
+    <string name="choose_app_repair_desc">Mais de um aplicativo ou atalho corresponde a este bloco. Escolha qual deve abrir:</string>
+    <string name="app_info">Informações do aplicativo</string>
+    <string name="deep_shortcuts">Atalhos do aplicativo</string>
+    <string name="work_profile_badge">Perfil de trabalho</string>
+    <string name="work_profile_paused">Perfil de trabalho pausado</string>
+
+    <!-- Fotos na Tela Inicial -->
+    <string name="home_photos_section">Fotos no início</string>
+    <string name="show_home_photos">Mostrar fotos no início</string>
+    <string name="show_home_photos_desc">Desativado por padrão. Oculta fotos do início mantendo sua seleção salva.</string>
+    <string name="pick_single_photo">Escolher 1 foto</string>
+    <string name="pick_multiple_photos">Escolher várias fotos</string>
+    <string name="photo_display_mode">Exibição de fotos</string>
+    <string name="photo_mode_static">Foto estática</string>
+    <string name="photo_mode_rotating">Rotação de fotos</string>
+    <string name="photo_crop_mode">Enquadramento</string>
+    <string name="photo_crop_center">Centro</string>
+    <string name="photo_crop_top">Topo</string>
+    <string name="photo_crop_bottom">Base</string>
+    <string name="show_photo_captions">Mostrar legenda no bloco de fotos</string>
+    <string name="forget_selected_photos">Esquecer fotos selecionadas</string>
+    <string name="forget_photos_confirm_title">Esquecer fotos selecionadas?</string>
+    <string name="forget_photos_confirm_msg">As fotos salvas para o bloco de início serão removidas do Bloco.</string>
+    <string name="photos_forgotten">Fotos selecionadas removidas</string>
+    <string name="choose_another_photo">Escolher outra foto</string>
+    <string name="photos_hidden_notice">Fotos no início desativadas</string>
+    <string name="selected_photos_count">%1$d foto(s) selecionada(s)</string>
+
+    <!-- Blocos ao Vivo & Permissões Opcionais -->
+    <string name="live_tiles_section">Blocos ao vivo e permissões</string>
+    <string name="tile_mode_live">Ao vivo</string>
+    <string name="tile_mode_static">Estático</string>
+    <string name="private_previews">Mostrar prévia de conteúdo</string>
+    <string name="private_previews_desc">Oculta títulos de eventos e detalhes de notificações por padrão.</string>
+    <string name="calendar_access_title">Próximo evento no Calendário</string>
+    <string name="calendar_access_desc">Opcional. Mostra seu próximo compromisso local ao conceder permissão de calendário.</string>
+    <string name="enable_calendar_access">Ativar acesso ao calendário</string>
+    <string name="calendar_access_granted">Calendário conectado</string>
+    <string name="calendar_next_event">Próximo: %1$s</string>
+    <string name="calendar_event_scheduled">Compromisso às %1$s</string>
+    <string name="notifications_access_title">Notificações ativas e Mídia</string>
+    <string name="notifications_access_desc">Opcional. Permite exibir indicadores de notificações ativas e controles do reprodutor em sessão de mídia autorizada pelo sistema.</string>
+    <string name="open_notification_access">Abrir acesso às notificações</string>
+    <string name="notification_listener_label">Bloco — Notificações e Mídia</string>
+    <string name="notifications_tile">Notificações</string>
+    <string name="active_notifications_count">%1$d ativa(s)</string>
+    <string name="no_active_notifications">Nenhuma notificação ativa</string>
+    <string name="notifications_permission_needed">Ative acesso às notificações</string>
+    <string name="music_tile">Música</string>
+    <string name="music_idle">Toque para abrir o reprodutor</string>
+    <string name="music_play">Reproduzir</string>
+    <string name="music_pause">Pausar</string>
+    <string name="music_previous">Anterior</string>
+    <string name="music_next">Próxima</string>
+    <string name="battery_charging">Carregando • %1$d%%</string>
+    <string name="battery_on_battery">Na bateria • %1$d%%</string>
+    <string name="add_live_tile">Adicionar bloco ao vivo</string>
+
+    <!-- Widgets do Sistema -->
+    <string name="system_widget">Widget do sistema</string>
+    <string name="add_system_widget">Adicionar widget Android</string>
+    <string name="widget_unavailable">Widget indisponível</string>
+    <string name="widget_pick_unavailable">Não foi possível abrir o seletor de widgets neste dispositivo</string>
+
+    <!-- Hubs -->
+    <string name="hubs">Hubs</string>
+    <string name="create_hub">Criar Hub</string>
+    <string name="hub_name">Nome do Hub</string>
+    <string name="hub_default_name">Novo Hub</string>
+    <string name="rename_hub">Renomear Hub</string>
+    <string name="delete_hub">Excluir Hub</string>
+    <string name="delete_hub_confirm_title">Excluir Hub “%1$s”?</string>
+    <string name="delete_hub_confirm_msg">O Hub e seus atalhos serão removidos. Seus aplicativos e notas salvas não serão apagados.</string>
+    <string name="hub_color">Cor do Hub</string>
+    <string name="pin_hub_to_start">Fixar Hub no início</string>
+    <string name="hub_empty">Este Hub está vazio. Adicione blocos, pastas, notas ou aplicativos.</string>
+    <string name="add_to_hub">Adicionar ao Hub</string>
+    <string name="add_existing_note">Adicionar nota salva</string>
+    <string name="back_to_start">Voltar ao início</string>
+    <string name="move_hub_earlier">Mover Hub antes</string>
+    <string name="move_hub_later">Mover Hub depois</string>
+
+    <!-- Pastas -->
+    <string name="folders">Pastas</string>
+    <string name="create_folder">Criar pasta</string>
+    <string name="folder_name">Nome da pasta</string>
+    <string name="folder_default_name">Nova pasta</string>
+    <string name="rename_folder">Renomear pasta</string>
+    <string name="add_apps_to_folder">Adicionar aplicativos</string>
+    <string name="dissolve_folder">Desfazer pasta</string>
+    <string name="move_to_start">Mover para o início</string>
+    <string name="remove_from_folder">Remover da pasta</string>
+    <string name="move_earlier">Mover antes</string>
+    <string name="move_later">Mover depois</string>
+    <string name="close_folder">Fechar pasta</string>
+    <string name="select_folder_apps">Escolha os aplicativos da pasta</string>
+    <string name="folder_empty">Pasta vazia</string>
+
+    <!-- Notas Rápidas -->
+    <string name="quick_note">Nota rápida</string>
+    <string name="saved_notes">Notas salvas</string>
+    <string name="note_title_hint">Título (opcional)</string>
+    <string name="note_body_hint">Escreva sua nota aqui...</string>
+    <string name="note_plain_text">Texto</string>
+    <string name="note_checklist">Lista</string>
+    <string name="add_checklist_item">Adicionar item</string>
+    <string name="pin_note_to_start">Fixar nota no início</string>
+    <string name="remove_from_start">Remover do início</string>
+    <string name="delete_note">Excluir nota</string>
+    <string name="note_deleted">Nota excluída</string>
+    <string name="undo">Desfazer</string>
+    <string name="no_saved_notes">Nenhuma nota salva ainda</string>
+    <string name="new_note">Nova nota</string>
+
+    <!-- Catálogo / Geral -->
+    <string name="no_results">Nenhum aplicativo encontrado</string>
+    <string name="clear">Limpar busca</string>
+    <string name="photo">Fotos</string>
+    <string name="pick">Escolher foto</string>
+    <string name="replace">Trocar foto</string>
+    <string name="missing_photo">Escolha outra foto</string>
+    <string name="battery">Bateria</string>
+    <string name="battery_unknown">Bateria indisponível</string>
+    <string name="calendar">Calendário</string>
+    <string name="clock">Relógio</string>
+    <string name="messages">Mensagens</string>
+    <string name="empty_start">Fixe um aplicativo para começar</string>
+    <string name="find_tile">Localizar bloco</string>
+    <string name="already_pinned">Este aplicativo já está fixado no início</string>
+    <string name="unavailable">Aplicativo indisponível</string>
+    <string name="unavailable_message">Este aplicativo não está mais disponível neste dispositivo. Deseja remover o atalho?</string>
+    <string name="save_failed">Não foi possível salvar</string>
+    <string name="retry">Tentar novamente</string>
+    <string name="up">Mover para cima</string>
+    <string name="down">Mover para baixo</string>
+    <string name="left">Mover para a esquerda</string>
+    <string name="right">Mover para a direita</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="tile_position">Coluna %1$d, linha %2$d</string>
+    <string name="jump_to_letter">Ir para a letra %1$s</string>
+    <string name="next_alarm">Alarme %1$s</string>
+    <string name="pinned_confirmation">Bloco fixado no início</string>
+    <string name="folder_count_apps">%1$d aplicativos</string>
+</resources>

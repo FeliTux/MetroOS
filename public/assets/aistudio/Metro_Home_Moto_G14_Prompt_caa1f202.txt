@@ -1,0 +1,1050 @@
+METRO HOME FOR MOTO G14
+Implementation brief for Google AI Studio
+
+Build a complete native Android launcher in Kotlin.
+Use the attached screenshot as the art direction for the Start screen.
+Deliver an installable debug APK when an Android build environment is available.
+Always deliver the Android Studio project and reproducible build instructions.
+Use English for code identifiers and Brazilian Portuguese for the interface.
+The product is a Home app that runs on the stock Motorola Moto G14.
+The phone must remain usable offline from its first launch.
+Build the smallest working vertical slice first: Home role, Start grid, app launch, system Home return.
+Next implement the lower command bar, app catalog, editing, persistence and live tiles.
+Use the acceptance examples at the end to check the implementation.
+Treat the example layouts and coordinates as test fixtures, never as content visible to users.
+
+01 / ART DIRECTION
+Match the arrangement on the phone screen in the supplied reference.
+Use only the pixels inside the reference display as design guidance.
+Fill the actual device screen with the launcher.
+Begin below the real Android status bar.
+Use black for the Start background and the spaces between tiles.
+Start with a muted blue near #256D94.
+Use white glyphs with strong silhouettes and restrained typography.
+Use the device sans-serif family and a light weight for large numerals.
+Choose a normal weight for app labels that must survive small sizes.
+Use square corners and flat fills.
+Place medium tile labels near their lower left corner.
+Keep small tiles icon-only and expose the app name to assistive technology.
+Fill the photo tile edge to edge using a center crop.
+Make the day number the strongest element on the calendar tile.
+Use vertical scrolling to reveal the next row of tiles.
+Keep the Start screen free of marketing copy, decorative numbering and permanent titles.
+Give the alphabetical list a large “Aplicativos” title in the Windows Phone tradition.
+Use a compact pressed state on tap and honor the system motion setting.
+Use original assets and locally available fonts.
+
+02 / LOWER COMMAND BAR
+Make the lower edge useful for one-handed operation.
+Draw a black Metro command bar directly above the system navigation inset.
+Match the neighboring system surface visually where Android permits.
+Give the app-owned region a unique set of icons and accessible action names.
+The Android gesture handle and three-button navigation area belong to System UI.
+Let Android handle Home, Back, Overview and app switching in their reserved regions.
+Keep every launcher touch target entirely inside app-owned space.
+Do not use accessibility services, overlays, root or gesture exclusion to remap the system bar.
+On Start, place Search on the left, Applications in the center and Edit on the right.
+Use a magnifier, a four-square glyph and a pencil.
+Place the three targets within reach of either thumb.
+Use evenly sized action cells with a minimum touch height of 48 dp.
+Tapping Search opens the app list with the search field focused.
+Tapping Applications opens the complete list with the keyboard hidden.
+Tapping Edit enters tile-editing mode at the current scroll position.
+In edit mode, switch the bar to contextual commands for the selected tile.
+Provide Resize, Unpin and Done; expose Move through the tile context menu as well as dragging.
+Show the size choices in a sheet anchored above the bar.
+Selecting Done commits the staged arrangement atomically.
+Pressing Back with pending edits offers Save, Discard and Continue editing.
+In search mode, yield space to the keyboard and keep focused results visible.
+In settings, use the Android Back action to return to the previous launcher surface.
+Expose settings through an overflow action in the app list.
+Anchor sheets to the current usable bounds after the keyboard opens or closes.
+Apply navigation insets once at the container that owns the bottom edge.
+Set bottom content padding so the last tile clears the full command bar.
+Handle navigation changes while the launcher is running.
+Read current insets instead of guessing the active navigation mode from the device model.
+
+03 / NATIVE IMPLEMENTATION
+Use one application module and a small, understandable state model.
+Choose a native view toolkit appropriate for a recycled scrolling tile surface.
+Include compatible Gradle, Android Gradle Plugin, Kotlin and SDK versions.
+Declare a properly exported Home activity for MAIN, HOME and DEFAULT.
+Provide an ordinary entry point for first-run setup before Home selection.
+Handle repeated Home intents in the existing launcher task.
+Use the system Home role request when available.
+Provide the system Home settings fallback when appropriate.
+Query launchable activities through Android's launcher facilities.
+Scope discovery to supported profiles and accessible activities.
+Identify each target by component and profile, never by display label alone.
+Observe app availability changes while the launcher is active.
+Refresh after foreground return to cover changes made while it was stopped.
+Resolve a live target at launch time and recover from missing activities.
+Persist the layout locally with a versioned schema.
+Keep a stable tile ID separate from the app identity.
+Store grid coordinates and spans in units; derive pixel bounds at layout time.
+Make every layout save an atomic operation.
+Keep a staged working copy during editing.
+Preserve an intentional empty screen across restarts.
+Treat first launch and an intentionally empty layout as different states.
+Use local resources for all interface copy and plurals.
+Support physical keyboard focus, TalkBack, font scaling and reduced motion.
+Request photo access through a user-initiated system picker.
+Retain access to the selected image through a supported grant or a bounded local copy.
+Use lifecycle-aware updates for the clock, calendar and battery.
+Load installed icons asynchronously and bound decoded bitmap memory.
+Refresh visible tiles only when their underlying values change.
+Keep search on the device and avoid analytics, accounts and advertisements.
+Make the release experience usable without network permissions.
+Profile a release-like build where measurements are supported.
+Separate physical Moto G14 measurements from emulator observations.
+Never claim a frame rate, battery saving or tested build without evidence.
+
+04 / INTERACTION CONTRACTS
+Each record below describes a user action and its observable result.
+First run
+  Given: Fresh install.
+  Action: Open the launcher from the app list.
+  Expected: Seed the reference layout using available local targets.
+  Continuity: Offer “Definir como início” in settings.
+Home selection
+  Given: Launcher is open in preview.
+  Action: Request the Home role.
+  Expected: Android presents its own selection screen.
+  Continuity: Return to Start if the user dismisses the chooser.
+Return home
+  Given: Another app is in front.
+  Action: Use the system Home action.
+  Expected: Show Start in the existing task.
+  Continuity: Retain the saved grid and scroll predictably.
+App launch
+  Given: A valid app tile is visible.
+  Action: Tap once.
+  Expected: Start the component associated with that tile.
+  Continuity: Ignore an accidental second tap during handoff.
+Missing app
+  Given: A component disappeared after binding.
+  Action: Tap its tile.
+  Expected: Refresh its availability and explain the change.
+  Continuity: Offer removal of the stale shortcut.
+Open list
+  Given: Start is visible.
+  Action: Tap Aplicativos in the lower bar.
+  Expected: Show locally installed, launchable apps.
+  Continuity: Keep the keyboard closed.
+Open search
+  Given: Start is visible.
+  Action: Tap Buscar in the lower bar.
+  Expected: Focus the search field and show the keyboard.
+  Continuity: Keep at least one result row reachable.
+Filter
+  Given: Search contains text.
+  Action: Type part of an app name.
+  Expected: Update the results from the local catalog.
+  Continuity: Match accented labels with an unaccented query.
+Clear query
+  Given: Search contains text.
+  Action: Activate Limpar busca.
+  Expected: Restore all visible catalog entries.
+  Continuity: Keep focus in the input field.
+No matches
+  Given: The query matches no installed app.
+  Action: Inspect the results.
+  Expected: Show Nenhum aplicativo encontrado.
+  Continuity: Offer a single action to clear the query.
+Pin
+  Given: An app is visible in the list.
+  Action: Long-press and choose Fixar no início.
+  Expected: Add it to a fitting open position.
+  Continuity: Persist the pin independently of future catalog refreshes.
+Duplicate pin
+  Given: A matching app already has a tile.
+  Action: Open the pin action again.
+  Expected: Identify the existing pin.
+  Continuity: Offer to locate its tile.
+Open editing
+  Given: A long grid has been scrolled.
+  Action: Tap Editar.
+  Expected: Enter edit mode at the same viewport.
+  Continuity: Select a tile by tapping it.
+Choose size
+  Given: One tile is selected.
+  Action: Tap Tamanho.
+  Expected: Present the supported sizes for that tile.
+  Continuity: Indicate the current size.
+Grow a tile
+  Given: A larger size would collide.
+  Action: Choose the larger span.
+  Expected: Preview a deterministic reflow or offer a fitting position.
+  Continuity: Keep every displaced tile reachable.
+Move by touch
+  Given: Edit mode has a selected tile.
+  Action: Drag to a valid cell and release.
+  Expected: Show the staged position.
+  Continuity: Finish to commit the change.
+Move accessibly
+  Given: TalkBack is enabled.
+  Action: Choose Mover from the tile actions.
+  Expected: Offer directional steps with spoken positions.
+  Continuity: Allow confirmation without dragging.
+Unpin
+  Given: A pinned app is selected.
+  Action: Tap Desafixar.
+  Expected: Remove its tile from the staged grid.
+  Continuity: Keep the installed app in the catalog.
+Discard edit
+  Given: A staged move is pending.
+  Action: Press Back and choose Descartar.
+  Expected: Restore the previously saved grid.
+  Continuity: Return focus to the original tile when present.
+Commit edit
+  Given: Several edits are pending.
+  Action: Tap Concluir.
+  Expected: Save one complete layout revision.
+  Continuity: Exit edit mode only when the save succeeds.
+Save failure
+  Given: Storage cannot accept the edit.
+  Action: Tap Concluir.
+  Expected: Show a readable error and retain the draft.
+  Continuity: Offer another save attempt.
+Use clock
+  Given: A clock app is available.
+  Action: Tap the time tile.
+  Expected: Open a supported clock or alarms destination.
+  Continuity: Display the device time format on the tile.
+Pick photo
+  Given: The photo tile has no image.
+  Action: Tap Escolher foto.
+  Expected: Launch the system picker.
+  Continuity: Retain the previous state if canceled.
+Replace photo
+  Given: A photo is already configured.
+  Action: Choose Trocar foto.
+  Expected: Replace the image after successful decoding.
+  Continuity: Release unused access to the previous image.
+Lost photo
+  Given: The stored image is unavailable.
+  Action: Return to Start.
+  Expected: Show a lightweight photo placeholder.
+  Continuity: Offer Escolher foto on the tile.
+Calendar
+  Given: A month boundary passes.
+  Action: Resume the launcher.
+  Expected: Show the current local date.
+  Continuity: Use the device time zone for the transition.
+Battery
+  Given: The battery level changes.
+  Action: Return to Start.
+  Expected: Show the reported percentage when available.
+  Continuity: Provide a neutral label for an unknown level.
+Accent
+  Given: Personalization is open.
+  Action: Choose a supported accent.
+  Expected: Preview the color on representative tiles.
+  Continuity: Preserve accessible text contrast.
+Reduced motion
+  Given: System animations are disabled.
+  Action: Open the app list.
+  Expected: Present the destination immediately.
+  Continuity: Preserve the same focus destination.
+Empty grid
+  Given: The final tile was removed and saved.
+  Action: Restart the launcher.
+  Expected: Show a simple path to Aplicativos.
+  Continuity: Do not repeat the first-run seed.
+Offline
+  Given: Airplane mode is enabled.
+  Action: Open Start and search.
+  Expected: Return results from the installed catalog.
+  Continuity: Keep the clock and local photo operational.
+Keyboard return
+  Given: A search result has focus.
+  Action: Press Enter.
+  Expected: Open the selected app.
+  Continuity: Home remains available through the operating system.
+Screen reader
+  Given: An icon-only tile has focus.
+  Action: Ask TalkBack to read it.
+  Expected: Announce the actual app or action name.
+  Continuity: Expose pin and move operations through named actions.
+Navigation mode change
+  Given: The device switches system navigation modes.
+  Action: Return to the launcher.
+  Expected: Lay out the bottom bar against the new inset.
+  Continuity: Keep the last row and menu reachable.
+Process recreation
+  Given: Android reclaims the launcher process.
+  Action: Press Home.
+  Expected: Load the last committed layout.
+  Continuity: Discard any partial disk write.
+Catalog update
+  Given: An app changes label or icon.
+  Action: Resume the app list.
+  Expected: Refresh its presentation.
+  Continuity: Keep its pinned position when the component is stable.
+Font scaling
+  Given: The user enlarges device text.
+  Action: Open a long app label.
+  Expected: Preserve reading order and access to its full name.
+  Continuity: Allow supporting text to wrap where appropriate.
+Rotation
+  Given: The window width changes.
+  Action: Recompute tile bounds.
+  Expected: Keep logical order and saved unit positions.
+  Continuity: Restore focus by stable tile ID.
+System Back
+  Given: A chooser is above an edit screen.
+  Action: Invoke Back.
+  Expected: Dismiss the chooser first.
+  Continuity: Keep the underlying edit session active.
+Search dismissal
+  Given: The keyboard covers the search screen.
+  Action: Use system Back.
+  Expected: Allow the IME to close first.
+  Continuity: A subsequent Back returns to the previous surface.
+
+05 / REFERENCE LAYOUT FIXTURE
+Use a six-unit grid, with zero-based column and row coordinates.
+Offer these roles when appropriate targets exist on the user's phone.
+The entries below are a deterministic geometry fixture for preview and layout tests.
+Example app names describe slots; shipping data comes from installed activities.
+For missing targets, fill app slots with distinct available favorites or leave them open.
+Keep the local utilities operational even on a device with very few installed apps.
+Slot: Phone
+  Column: 0
+  Row: 0
+  Footprint: 1 × 1 units
+  Face: Handset glyph
+  Activation: Open the resolved dialer.
+Slot: Contacts
+  Column: 1
+  Row: 0
+  Footprint: 1 × 1 units
+  Face: Person glyph
+  Activation: Open the contact-list application.
+Slot: Chat
+  Column: 0
+  Row: 1
+  Footprint: 1 × 1 units
+  Face: Installed messaging icon
+  Activation: Open the chosen chat application.
+Slot: Favorite messenger
+  Column: 1
+  Row: 1
+  Footprint: 1 × 1 units
+  Face: Installed favorite icon
+  Activation: Launch the selected messenger.
+Slot: Messages
+  Column: 2
+  Row: 0
+  Footprint: 2 × 2 units
+  Face: Message bubble and Mensagens label
+  Activation: Open the default SMS app when available.
+Slot: Clock
+  Column: 4
+  Row: 0
+  Footprint: 2 × 2 units
+  Face: Large local time and optional next alarm
+  Activation: Open the clock destination.
+Slot: Battery
+  Column: 0
+  Row: 2
+  Footprint: 2 × 2 units
+  Face: Battery outline and percentage
+  Activation: Open available battery settings.
+Slot: Photo
+  Column: 2
+  Row: 2
+  Footprint: 4 × 2 units
+  Face: Full-bleed local image
+  Activation: Show the chosen photo or start the picker.
+Slot: Calendar
+  Column: 0
+  Row: 4
+  Footprint: 4 × 2 units
+  Face: Weekday, month and large day numeral
+  Activation: Open the local calendar destination.
+Slot: Mail
+  Column: 4
+  Row: 4
+  Footprint: 2 × 2 units
+  Face: Envelope silhouette and app label
+  Activation: Open the installed email client.
+Slot: Community
+  Column: 0
+  Row: 6
+  Footprint: 2 × 2 units
+  Face: Selected community app icon
+  Activation: Open its saved component.
+Slot: Maps
+  Column: 2
+  Row: 6
+  Footprint: 2 × 2 units
+  Face: Location glyph and Mapas label
+  Activation: Launch the installed map app.
+Slot: Music
+  Column: 4
+  Row: 6
+  Footprint: 2 × 2 units
+  Face: Music note and player label
+  Activation: Launch the preferred music player.
+Slot: Professional network
+  Column: 0
+  Row: 8
+  Footprint: 1 × 1 units
+  Face: Current app icon
+  Activation: Open a pinned networking app.
+Slot: Streaming
+  Column: 1
+  Row: 8
+  Footprint: 1 × 1 units
+  Face: Current streaming icon
+  Activation: Open a pinned streaming service.
+Slot: Video
+  Column: 0
+  Row: 9
+  Footprint: 1 × 1 units
+  Face: Video service icon
+  Activation: Launch the chosen video application.
+Slot: Short videos
+  Column: 1
+  Row: 9
+  Footprint: 1 × 1 units
+  Face: Installed short-video icon
+  Activation: Open the pinned app directly.
+Slot: Main social app
+  Column: 2
+  Row: 8
+  Footprint: 2 × 2 units
+  Face: Large app icon with short label
+  Activation: Open the user's chosen social app.
+Slot: Secondary social app
+  Column: 4
+  Row: 8
+  Footprint: 1 × 1 units
+  Face: Current app icon
+  Activation: Open a secondary pinned app.
+Slot: Browser
+  Column: 5
+  Row: 8
+  Footprint: 1 × 1 units
+  Face: Globe or installed browser icon
+  Activation: Launch the preferred browser.
+Slot: Store
+  Column: 4
+  Row: 9
+  Footprint: 1 × 1 units
+  Face: Installed store icon
+  Activation: Open the available app store.
+Slot: Assistant
+  Column: 5
+  Row: 9
+  Footprint: 1 × 1 units
+  Face: Installed assistant icon
+  Activation: Launch the pinned assistant app.
+Slot: Wallet
+  Column: 0
+  Row: 10
+  Footprint: 2 × 2 units
+  Face: Wallet icon and app name
+  Activation: Open a user-selected wallet app.
+Slot: Reader
+  Column: 2
+  Row: 10
+  Footprint: 1 × 1 units
+  Face: Book glyph
+  Activation: Launch the preferred reader.
+Slot: Files
+  Column: 3
+  Row: 10
+  Footprint: 1 × 1 units
+  Face: Folder glyph
+  Activation: Open a launchable file manager.
+Slot: Camera
+  Column: 2
+  Row: 11
+  Footprint: 1 × 1 units
+  Face: Camera glyph
+  Activation: Launch the camera app.
+Slot: Security
+  Column: 3
+  Row: 11
+  Footprint: 1 × 1 units
+  Face: Current app icon
+  Activation: Open the selected security application.
+Slot: Notes
+  Column: 4
+  Row: 10
+  Footprint: 2 × 2 units
+  Face: Note glyph and app name
+  Activation: Open the pinned notes application.
+
+06 / PIXEL GEOMETRY ACCEPTANCE FIXTURES
+Use these synthetic widths to verify rounding, alignment and touch geometry.
+Dimensions in this section are pixels after density conversion.
+The fixture width excludes safe insets and margins.
+The fixture gutter is 4 px; convert the actual design gutter from dp in production.
+Let p be the available width after subtracting five gutters.
+Place column i at floor(i × p / 6) + 4 × i.
+Define the far edge of the last track as the full fixture width.
+Distribute fractional pixels across tracks rather than accumulating a right-edge gap.
+Each listed interval uses inclusive start and exclusive end.
+Verify the bounds and width independently of the production layout algorithm.
+Window fixture: 320 px
+  Available track pixels: 300
+  Six column starts: 0, 54, 108, 162, 216, 270
+  small at left
+    Horizontal interval: [0, 50)
+    Expected measured width: 50 px
+  small at right
+    Horizontal interval: [270, 320)
+    Expected measured width: 50 px
+  center square
+    Horizontal interval: [108, 212)
+    Expected measured width: 104 px
+  right square
+    Horizontal interval: [216, 320)
+    Expected measured width: 104 px
+  left calendar
+    Horizontal interval: [0, 212)
+    Expected measured width: 212 px
+  right photo
+    Horizontal interval: [108, 320)
+    Expected measured width: 212 px
+Window fixture: 360 px
+  Available track pixels: 340
+  Six column starts: 0, 60, 121, 182, 242, 303
+  small at left
+    Horizontal interval: [0, 56)
+    Expected measured width: 56 px
+  small at right
+    Horizontal interval: [303, 360)
+    Expected measured width: 57 px
+  center square
+    Horizontal interval: [121, 238)
+    Expected measured width: 117 px
+  right square
+    Horizontal interval: [242, 360)
+    Expected measured width: 118 px
+  left calendar
+    Horizontal interval: [0, 238)
+    Expected measured width: 238 px
+  right photo
+    Horizontal interval: [121, 360)
+    Expected measured width: 239 px
+Window fixture: 393 px
+  Available track pixels: 373
+  Six column starts: 0, 66, 132, 198, 264, 330
+  small at left
+    Horizontal interval: [0, 62)
+    Expected measured width: 62 px
+  small at right
+    Horizontal interval: [330, 393)
+    Expected measured width: 63 px
+  center square
+    Horizontal interval: [132, 260)
+    Expected measured width: 128 px
+  right square
+    Horizontal interval: [264, 393)
+    Expected measured width: 129 px
+  left calendar
+    Horizontal interval: [0, 260)
+    Expected measured width: 260 px
+  right photo
+    Horizontal interval: [132, 393)
+    Expected measured width: 261 px
+Window fixture: 411 px
+  Available track pixels: 391
+  Six column starts: 0, 69, 138, 207, 276, 345
+  small at left
+    Horizontal interval: [0, 65)
+    Expected measured width: 65 px
+  small at right
+    Horizontal interval: [345, 411)
+    Expected measured width: 66 px
+  center square
+    Horizontal interval: [138, 272)
+    Expected measured width: 134 px
+  right square
+    Horizontal interval: [276, 411)
+    Expected measured width: 135 px
+  left calendar
+    Horizontal interval: [0, 272)
+    Expected measured width: 272 px
+  right photo
+    Horizontal interval: [138, 411)
+    Expected measured width: 273 px
+Window fixture: 432 px
+  Available track pixels: 412
+  Six column starts: 0, 72, 145, 218, 290, 363
+  small at left
+    Horizontal interval: [0, 68)
+    Expected measured width: 68 px
+  small at right
+    Horizontal interval: [363, 432)
+    Expected measured width: 69 px
+  center square
+    Horizontal interval: [145, 286)
+    Expected measured width: 141 px
+  right square
+    Horizontal interval: [290, 432)
+    Expected measured width: 142 px
+  left calendar
+    Horizontal interval: [0, 286)
+    Expected measured width: 286 px
+  right photo
+    Horizontal interval: [145, 432)
+    Expected measured width: 287 px
+Window fixture: 480 px
+  Available track pixels: 460
+  Six column starts: 0, 80, 161, 242, 322, 403
+  small at left
+    Horizontal interval: [0, 76)
+    Expected measured width: 76 px
+  small at right
+    Horizontal interval: [403, 480)
+    Expected measured width: 77 px
+  center square
+    Horizontal interval: [161, 318)
+    Expected measured width: 157 px
+  right square
+    Horizontal interval: [322, 480)
+    Expected measured width: 158 px
+  left calendar
+    Horizontal interval: [0, 318)
+    Expected measured width: 318 px
+  right photo
+    Horizontal interval: [161, 480)
+    Expected measured width: 319 px
+Window fixture: 540 px
+  Available track pixels: 520
+  Six column starts: 0, 90, 181, 272, 362, 453
+  small at left
+    Horizontal interval: [0, 86)
+    Expected measured width: 86 px
+  small at right
+    Horizontal interval: [453, 540)
+    Expected measured width: 87 px
+  center square
+    Horizontal interval: [181, 358)
+    Expected measured width: 177 px
+  right square
+    Horizontal interval: [362, 540)
+    Expected measured width: 178 px
+  left calendar
+    Horizontal interval: [0, 358)
+    Expected measured width: 358 px
+  right photo
+    Horizontal interval: [181, 540)
+    Expected measured width: 359 px
+Window fixture: 600 px
+  Available track pixels: 580
+  Six column starts: 0, 100, 201, 302, 402, 503
+  small at left
+    Horizontal interval: [0, 96)
+    Expected measured width: 96 px
+  small at right
+    Horizontal interval: [503, 600)
+    Expected measured width: 97 px
+  center square
+    Horizontal interval: [201, 398)
+    Expected measured width: 197 px
+  right square
+    Horizontal interval: [402, 600)
+    Expected measured width: 198 px
+  left calendar
+    Horizontal interval: [0, 398)
+    Expected measured width: 398 px
+  right photo
+    Horizontal interval: [201, 600)
+    Expected measured width: 399 px
+Window fixture: 720 px
+  Available track pixels: 700
+  Six column starts: 0, 120, 241, 362, 482, 603
+  small at left
+    Horizontal interval: [0, 116)
+    Expected measured width: 116 px
+  small at right
+    Horizontal interval: [603, 720)
+    Expected measured width: 117 px
+  center square
+    Horizontal interval: [241, 478)
+    Expected measured width: 237 px
+  right square
+    Horizontal interval: [482, 720)
+    Expected measured width: 238 px
+  left calendar
+    Horizontal interval: [0, 478)
+    Expected measured width: 478 px
+  right photo
+    Horizontal interval: [241, 720)
+    Expected measured width: 479 px
+Window fixture: 900 px
+  Available track pixels: 880
+  Six column starts: 0, 150, 301, 452, 602, 753
+  small at left
+    Horizontal interval: [0, 146)
+    Expected measured width: 146 px
+  small at right
+    Horizontal interval: [753, 900)
+    Expected measured width: 147 px
+  center square
+    Horizontal interval: [301, 598)
+    Expected measured width: 297 px
+  right square
+    Horizontal interval: [602, 900)
+    Expected measured width: 298 px
+  left calendar
+    Horizontal interval: [0, 598)
+    Expected measured width: 598 px
+  right photo
+    Horizontal interval: [301, 900)
+    Expected measured width: 599 px
+Window fixture: 1080 px
+  Available track pixels: 1060
+  Six column starts: 0, 180, 361, 542, 722, 903
+  small at left
+    Horizontal interval: [0, 176)
+    Expected measured width: 176 px
+  small at right
+    Horizontal interval: [903, 1080)
+    Expected measured width: 177 px
+  center square
+    Horizontal interval: [361, 718)
+    Expected measured width: 357 px
+  right square
+    Horizontal interval: [722, 1080)
+    Expected measured width: 358 px
+  left calendar
+    Horizontal interval: [0, 718)
+    Expected measured width: 718 px
+  right photo
+    Horizontal interval: [361, 1080)
+    Expected measured width: 719 px
+Window fixture: 1200 px
+  Available track pixels: 1180
+  Six column starts: 0, 200, 401, 602, 802, 1003
+  small at left
+    Horizontal interval: [0, 196)
+    Expected measured width: 196 px
+  small at right
+    Horizontal interval: [1003, 1200)
+    Expected measured width: 197 px
+  center square
+    Horizontal interval: [401, 798)
+    Expected measured width: 397 px
+  right square
+    Horizontal interval: [802, 1200)
+    Expected measured width: 398 px
+  left calendar
+    Horizontal interval: [0, 798)
+    Expected measured width: 798 px
+  right photo
+    Horizontal interval: [401, 1200)
+    Expected measured width: 799 px
+
+07 / PORTUGUESE COPY DECK
+Use the following entries where their interaction exists.
+Resource keys are suggestions for implementation and localization tests.
+Keep the text itself accessible to translation and font scaling.
+Resource: home_role
+  Text: Definir como início
+  Purpose: Request the Android Home role.
+Resource: apps
+  Text: Aplicativos
+  Purpose: Open the complete catalog.
+Resource: search
+  Text: Buscar
+  Purpose: Open focused search.
+Resource: search_hint
+  Text: Buscar aplicativos
+  Purpose: Describe the search field.
+Resource: edit
+  Text: Editar
+  Purpose: Enter grid editing.
+Resource: done
+  Text: Concluir
+  Purpose: Commit the draft.
+Resource: unpin
+  Text: Desafixar
+  Purpose: Remove a shortcut from Start.
+Resource: pin
+  Text: Fixar no início
+  Purpose: Add an app shortcut.
+Resource: move
+  Text: Mover
+  Purpose: Open accessible placement controls.
+Resource: resize
+  Text: Tamanho
+  Purpose: Choose the selected tile size.
+Resource: small
+  Text: Pequeno
+  Purpose: Select one grid unit.
+Resource: medium
+  Text: Médio
+  Purpose: Select a two-unit square.
+Resource: wide
+  Text: Largo
+  Purpose: Select a four-unit rectangle.
+Resource: save
+  Text: Salvar
+  Purpose: Commit pending changes before exiting.
+Resource: discard
+  Text: Descartar
+  Purpose: Exit with the previous layout.
+Resource: keep_editing
+  Text: Continuar editando
+  Purpose: Return to the draft.
+Resource: unsaved
+  Text: Salvar alterações?
+  Purpose: Ask how to exit a changed draft.
+Resource: settings
+  Text: Configurações
+  Purpose: Open launcher preferences.
+Resource: accent
+  Text: Cor dos blocos
+  Purpose: Choose a tile accent.
+Resource: motion
+  Text: Reduzir animações
+  Purpose: Reduce launcher motion.
+Resource: no_results
+  Text: Nenhum aplicativo encontrado
+  Purpose: Describe an empty filtered catalog.
+Resource: clear
+  Text: Limpar busca
+  Purpose: Reset the query.
+Resource: photo
+  Text: Fotos
+  Purpose: Name the photo tile.
+Resource: pick
+  Text: Escolher foto
+  Purpose: Open the photo selector.
+Resource: replace
+  Text: Trocar foto
+  Purpose: Replace the chosen image.
+Resource: missing_photo
+  Text: Escolha outra foto
+  Purpose: Recover an inaccessible image.
+Resource: battery
+  Text: Bateria
+  Purpose: Describe the battery tile.
+Resource: calendar
+  Text: Calendário
+  Purpose: Read the date tile.
+Resource: clock
+  Text: Relógio
+  Purpose: Read the clock tile.
+Resource: messages
+  Text: Mensagens
+  Purpose: Describe the SMS shortcut.
+Resource: empty_start
+  Text: Fixe um aplicativo para começar
+  Purpose: Explain an intentionally empty Start screen.
+Resource: find_tile
+  Text: Localizar bloco
+  Purpose: Reveal an existing pin.
+Resource: unavailable
+  Text: Aplicativo indisponível
+  Purpose: Explain a stale shortcut.
+Resource: save_failed
+  Text: Não foi possível salvar
+  Purpose: Explain a failed layout commit.
+Resource: retry
+  Text: Tentar novamente
+  Purpose: Retry the requested operation.
+Resource: up
+  Text: Mover para cima
+  Purpose: Move toward the preceding row.
+Resource: down
+  Text: Mover para baixo
+  Purpose: Move toward the next row.
+Resource: left
+  Text: Mover para a esquerda
+  Purpose: Move toward the preceding column.
+Resource: right
+  Text: Mover para a direita
+  Purpose: Move toward the next column.
+Resource: cancel
+  Text: Cancelar
+  Purpose: Close a choice without applying it.
+
+08 / LOWER-EDGE DEVICE TEST PLAN
+Run this set under both system navigation configurations when accessible.
+Treat these as expected outcomes. Record a pass only after actual observation.
+For gesture navigation, begin launcher touches within its command region.
+For three-button navigation, test the launcher and system rows independently.
+Device check: Gestures / Start, first row
+  Input: Tap the left command.
+  Visible outcome: Search receives text focus.
+  Additional assertion: The input method appears.
+Device check: Gestures / Start, final row
+  Input: Tap the center command.
+  Visible outcome: The app list opens.
+  Additional assertion: The final grid row was reachable before transition.
+Device check: Gestures / Start, scrolled
+  Input: Tap the pencil.
+  Visible outcome: Editing starts in place.
+  Additional assertion: The same tiles remain in view.
+Device check: Gestures / Edit, selected tile
+  Input: Activate Tamanho.
+  Visible outcome: Size choices appear.
+  Additional assertion: Every choice clears the lower system inset.
+Device check: Gestures / Edit, pending change
+  Input: Activate Concluir.
+  Visible outcome: The layout is committed.
+  Additional assertion: The Start commands return.
+Device check: Gestures / Edit, pending removal
+  Input: Invoke Android Back.
+  Visible outcome: The unsaved-changes choice appears.
+  Additional assertion: Continuar editando preserves the staged removal.
+Device check: Gestures / Search, keyboard open
+  Input: Enter an app name.
+  Visible outcome: Matching apps remain selectable.
+  Additional assertion: The keyboard never covers the focused result after scrolling.
+Device check: Gestures / Search, keyboard visible
+  Input: Invoke Android Back once.
+  Visible outcome: The keyboard closes.
+  Additional assertion: Search and its query remain available.
+Device check: Gestures / App list, keyboard hidden
+  Input: Invoke Android Back.
+  Visible outcome: Start returns.
+  Additional assertion: The command bar is ready for touch.
+Device check: Gestures / Settings, accent changed
+  Input: Return to Start.
+  Visible outcome: The selected accent is visible.
+  Additional assertion: Command glyphs remain legible.
+Device check: Gestures / Photo picker open
+  Input: Cancel the system picker.
+  Visible outcome: The launcher resumes.
+  Additional assertion: The previous photo remains selected.
+Device check: Gestures / Other app in front
+  Input: Invoke system Home.
+  Visible outcome: Start resumes.
+  Additional assertion: There is only one active launcher surface.
+Device check: Gestures / Start, system edge
+  Input: Invoke system Overview.
+  Visible outcome: Android opens its overview surface.
+  Additional assertion: No launcher search or edit action fires.
+Device check: Gestures / Start, large fonts
+  Input: Read the bottom command labels.
+  Visible outcome: Commands have distinct accessible names.
+  Additional assertion: Touch targets remain reachable at the new scale.
+Device check: Gestures / Start, TalkBack enabled
+  Input: Focus the center command and activate it.
+  Visible outcome: The app catalog opens.
+  Additional assertion: Focus lands on a meaningful catalog element.
+Device check: Gestures / Edit, reduced motion
+  Input: Resize and confirm a selected tile.
+  Visible outcome: The layout updates directly.
+  Additional assertion: The selection remains identifiable without motion.
+Device check: Gestures / Search, no results
+  Input: Activate Limpar busca.
+  Visible outcome: The catalog returns.
+  Additional assertion: Input focus stays in the search field.
+Device check: Gestures / Start, layout resized
+  Input: Scroll to the final tile.
+  Visible outcome: The whole tile can be revealed.
+  Additional assertion: Touching its center opens the intended target.
+Device check: Gestures / Edit, dirty draft
+  Input: Tap Concluir twice quickly.
+  Visible outcome: One complete layout revision is accepted.
+  Additional assertion: Rapid input leaves a usable Start screen.
+Device check: Gestures / Start, first-run configuration
+  Input: Decline the default Home request.
+  Visible outcome: The launcher remains usable in preview.
+  Additional assertion: System Home still follows the user's current choice.
+Device check: Three buttons / Start, first row
+  Input: Tap the left command.
+  Visible outcome: Search receives text focus.
+  Additional assertion: The input method appears.
+Device check: Three buttons / Start, final row
+  Input: Tap the center command.
+  Visible outcome: The app list opens.
+  Additional assertion: The final grid row was reachable before transition.
+Device check: Three buttons / Start, scrolled
+  Input: Tap the pencil.
+  Visible outcome: Editing starts in place.
+  Additional assertion: The same tiles remain in view.
+Device check: Three buttons / Edit, selected tile
+  Input: Activate Tamanho.
+  Visible outcome: Size choices appear.
+  Additional assertion: Every choice clears the lower system inset.
+Device check: Three buttons / Edit, pending change
+  Input: Activate Concluir.
+  Visible outcome: The layout is committed.
+  Additional assertion: The Start commands return.
+Device check: Three buttons / Edit, pending removal
+  Input: Invoke Android Back.
+  Visible outcome: The unsaved-changes choice appears.
+  Additional assertion: Continuar editando preserves the staged removal.
+Device check: Three buttons / Search, keyboard open
+  Input: Enter an app name.
+  Visible outcome: Matching apps remain selectable.
+  Additional assertion: The keyboard never covers the focused result after scrolling.
+Device check: Three buttons / Search, keyboard visible
+  Input: Invoke Android Back once.
+  Visible outcome: The keyboard closes.
+  Additional assertion: Search and its query remain available.
+Device check: Three buttons / App list, keyboard hidden
+  Input: Invoke Android Back.
+  Visible outcome: Start returns.
+  Additional assertion: The command bar is ready for touch.
+Device check: Three buttons / Settings, accent changed
+  Input: Return to Start.
+  Visible outcome: The selected accent is visible.
+  Additional assertion: Command glyphs remain legible.
+Device check: Three buttons / Photo picker open
+  Input: Cancel the system picker.
+  Visible outcome: The launcher resumes.
+  Additional assertion: The previous photo remains selected.
+Device check: Three buttons / Other app in front
+  Input: Invoke system Home.
+  Visible outcome: Start resumes.
+  Additional assertion: There is only one active launcher surface.
+Device check: Three buttons / Start, system edge
+  Input: Invoke system Overview.
+  Visible outcome: Android opens its overview surface.
+  Additional assertion: No launcher search or edit action fires.
+Device check: Three buttons / Start, large fonts
+  Input: Read the bottom command labels.
+  Visible outcome: Commands have distinct accessible names.
+  Additional assertion: Touch targets remain reachable at the new scale.
+Device check: Three buttons / Start, TalkBack enabled
+  Input: Focus the center command and activate it.
+  Visible outcome: The app catalog opens.
+  Additional assertion: Focus lands on a meaningful catalog element.
+Device check: Three buttons / Edit, reduced motion
+  Input: Resize and confirm a selected tile.
+  Visible outcome: The layout updates directly.
+  Additional assertion: The selection remains identifiable without motion.
+Device check: Three buttons / Search, no results
+  Input: Activate Limpar busca.
+  Visible outcome: The catalog returns.
+  Additional assertion: Input focus stays in the search field.
+Device check: Three buttons / Start, layout resized
+  Input: Scroll to the final tile.
+  Visible outcome: The whole tile can be revealed.
+  Additional assertion: Touching its center opens the intended target.
+Device check: Three buttons / Edit, dirty draft
+  Input: Tap Concluir twice quickly.
+  Visible outcome: One complete layout revision is accepted.
+  Additional assertion: Rapid input leaves a usable Start screen.
+Device check: Three buttons / Start, first-run configuration
+  Input: Decline the default Home request.
+  Visible outcome: The launcher remains usable in preview.
+  Additional assertion: System Home still follows the user's current choice.
+
+09 / DELIVERY AND HANDOFF
+Include source files, resources, build scripts and Gradle wrapper.
+Pin compatible build dependencies so another developer can reproduce the build.
+Document the required JDK and Android SDK versions.
+Provide the Windows build command: gradlew.bat assembleDebug.
+Provide the APK output path relative to the project root.
+Explain in Portuguese how to select this launcher as the default Home app.
+Explain how to restore Motorola's Home app from system settings.
+Include one screenshot of Start from the running app if rendering is available.
+Identify the device or emulator used for that screenshot.
+List build results, interaction checks and physical-device checks separately.
+For a skipped check, state the missing prerequisite in one sentence.
+If Android tooling is unavailable, deliver the native project and exact verification steps.
+When a build succeeds, attach the APK if the environment supports file output.
+Begin implementation with the working Home flow and deliver the runnable result.
